@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2une.ai — Human-Compute Infrastructure for Frontier AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7FA;
+  --surface:#FFFFFF;
+  --ink:#10131C;
+  --ink-soft:#565C6B;
+  --ink-faint:#8A8FA0;
+  --line:#E3E6EE;
+  --line-soft:#EDEFF5;
+  --indigo:#2F3FD1;
+  --indigo-deep:#1A2280;
+  --indigo-tint:#EAEBFC;
+  --gold:#B9863A;
+  --gold-deep:#8C6225;
+  --gold-tint:#F4E9D6;
+  --emerald:#2E9E6E;
+  --radius-lg:20px;
+  --radius-md:14px;
+  --radius-sm:9px;
+  --maxw:1180px;
+  --font-display:'Hanken Grotesk',sans-serif;
+  --font-body:'Public Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--indigo);
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:18px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--ink);}
+h2{font-size:clamp(28px,3.6vw,42px);line-height:1.12;font-weight:800;}
+.section{padding:104px 0;}
+.section-head{max-width:680px;margin-bottom:56px;}
+.section-head p{color:var(--ink-soft);font-size:17px;margin-top:16px;max-width:560px;}
+.btn{
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:14.5px;
+  padding:13px 22px;
+  border-radius:999px;
+  display:inline-flex;align-items:center;gap:8px;
+  cursor:pointer;border:1px solid transparent;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--ink);color:#fff;}
+.btn-primary:hover{background:var(--indigo-deep);box-shadow:0 8px 20px -8px rgba(47,63,209,.5);}
+.btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.btn-secondary:hover{border-color:var(--ink);}
+.btn-arrow{transition:transform .15s ease;}
+.btn:hover .btn-arrow{transform:translateX(3px);}
+
+/* ===== NAV ===== */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(246,247,250,.78);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px;}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:19px;}
+.brand .mark{width:20px;height:20px;position:relative;flex:none;}
+.brand .mark span{position:absolute;width:9px;height:9px;border-radius:50%;}
+.brand .mark .m1{background:var(--indigo);top:0;left:0;}
+.brand .mark .m2{background:var(--gold);bottom:0;right:0;}
+.brand .badge{
+  font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--ink-faint);
+  border:1px solid var(--line);border-radius:999px;padding:3px 9px;letter-spacing:.02em;
+  margin-left:4px;
+}
+.navlinks{display:flex;gap:36px;font-size:14.5px;font-weight:500;color:var(--ink-soft);}
+.navlinks a{position:relative;padding:6px 0;transition:color .15s;}
+.navlinks a:hover,.navlinks a.active{color:var(--ink);}
+.navlinks a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--gold);border-radius:2px;}
+.nav-cta{display:flex;align-items:center;gap:14px;}
+.menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+.menu-btn span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;transition:.2s;}
+.mobile-panel{display:none;flex-direction:column;gap:2px;padding:8px 0 20px;border-top:1px solid var(--line);}
+.mobile-panel a{padding:12px 4px;font-size:15px;font-weight:500;border-bottom:1px solid var(--line-soft);}
+.mobile-panel.open{display:flex;}
+
+/* ===== HERO ===== */
+.hero{padding:84px 0 0;position:relative;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:start;position:relative;}
+.hero h1{font-size:clamp(36px,5.2vw,62px);line-height:1.06;font-weight:800;max-width:760px;}
+.hero h1 em{font-style:normal;color:var(--indigo);}
+.hero-sub{font-size:18px;color:var(--ink-soft);max-width:540px;margin:24px 0 34px;}
+.hero-ctas{display:flex;gap:14px;margin-bottom:64px;}
+.attune{position:absolute;right:-10px;top:30px;width:260px;height:260px;pointer-events:none;}
+.attune .c1,.attune .c2{position:absolute;border-radius:50%;filter:blur(0px);transition:transform 1.4s cubic-bezier(.16,1,.3,1);}
+.attune .c1{width:120px;height:120px;background:radial-gradient(circle at 35% 35%, var(--indigo), var(--indigo-deep));top:20px;left:10px;opacity:.92;}
+.attune .c2{width:96px;height:96px;background:radial-gradient(circle at 35% 35%, var(--gold), var(--gold-deep));bottom:10px;right:0;opacity:.92;}
+.attune.tuned .c1{transform:translate(28px,18px);}
+.attune.tuned .c2{transform:translate(-28px,-18px);}
+
+.stat-strip{
+  border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,1fr);
+}
+.stat-strip .stat{padding:26px 28px;border-right:1px solid var(--line);}
+.stat-strip .stat:last-child{border-right:none;}
+.stat .live{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--emerald);margin-bottom:10px;}
+.stat .live .pulse{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,158,110,.5);}70%{box-shadow:0 0 0 6px rgba(46,158,110,0);}100%{box-shadow:0 0 0 0 rgba(46,158,110,0);}}
+.stat-num{font-family:var(--font-mono);font-weight:500;font-size:24px;color:var(--ink);}
+.stat-label{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.3;}
+
+/* ===== POSITIONING ===== */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.compare-card{border-radius:var(--radius-lg);padding:32px;border:1px solid var(--line);}
+.compare-card.generic{background:var(--surface);}
+.compare-card.tune{background:var(--ink);color:#fff;border-color:var(--ink);}
+.compare-card h3{font-size:17px;margin-bottom:20px;}
+.compare-card.tune h3{color:#fff;}
+.compare-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;}
+.compare-card li{display:flex;gap:10px;font-size:14.5px;align-items:flex-start;}
+.compare-card.generic li{color:var(--ink-soft);}
+.compare-card.tune li{color:#D9DBF7;}
+.compare-card li .ico{flex:none;width:16px;height:16px;margin-top:2px;}
+.compare-card.generic .ico{color:var(--ink-faint);}
+.compare-card.tune .ico{color:var(--gold);}
+
+/* ===== LIFECYCLE ===== */
+.cycle{display:grid;grid-template-columns:340px 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);}
+.cycle-tabs{border-right:1px solid var(--line);}
+.cycle-tab{padding:24px 26px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;}
+.cycle-tab:last-child{border-bottom:none;}
+.cycle-tab:hover{background:var(--line-soft);}
+.cycle-tab.active{background:var(--indigo-tint);}
+.cycle-tab .num{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+.cycle-tab.active .num{color:var(--indigo);}
+.cycle-tab .ttl{font-family:var(--font-display);font-weight:700;font-size:18px;margin-top:6px;}
+.cycle-panel{padding:40px 44px;}
+.cycle-panel p{color:var(--ink-soft);font-size:15.5px;max-width:480px;margin:0 0 26px;}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;}
+.tag{font-family:var(--font-mono);font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--ink-soft);}
+
+/* ===== DOMAINS ===== */
+.domain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.domain-card{
+  border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;background:var(--surface);
+  cursor:pointer;transition:border-color .15s, box-shadow .15s, transform .15s;
+}
+.domain-card:hover{border-color:var(--indigo);box-shadow:0 16px 32px -20px rgba(16,19,28,.18);transform:translateY(-2px);}
+.domain-card .tag-sm{font-family:var(--font-mono);font-size:11px;color:var(--gold-deep);background:var(--gold-tint);display:inline-block;padding:4px 10px;border-radius:999px;margin-bottom:16px;}
+.domain-card h3{font-size:18px;margin-bottom:10px;}
+.domain-card .desc{font-size:14px;color:var(--ink-soft);margin-bottom:14px;}
+.domain-card ul{list-style:none;margin:0;padding:0;max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.domain-card.open ul{max-height:220px;}
+.domain-card li{font-size:13.5px;color:var(--ink-soft);padding:7px 0;border-top:1px solid var(--line-soft);display:flex;gap:8px;}
+.domain-card li:before{content:"—";color:var(--ink-faint);}
+.domain-card .toggle{font-family:var(--font-mono);font-size:12px;color:var(--indigo);}
+
+/* ===== DATA ASSETS ===== */
+.data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.data-card{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface);padding:24px;display:flex;flex-direction:column;height:100%;}
+.data-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:30px;}
+.data-format{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:4px 8px;}
+.data-vol{font-family:var(--font-mono);font-size:30px;font-weight:500;color:var(--indigo);margin-bottom:6px;}
+.data-name{font-size:15px;font-weight:600;margin-bottom:6px;}
+.data-desc{font-size:13px;color:var(--ink-soft);margin-top:auto;padding-top:14px;}
+
+/* ===== TALENT PYRAMID ===== */
+.pyramid{display:flex;flex-direction:column;gap:10px;}
+.tier{
+  display:grid;grid-template-columns:90px 1fr 140px;align-items:center;gap:24px;
+  border:1px solid var(--line);border-radius:var(--radius-md);background:var(--surface);
+  padding:20px 26px;cursor:default;transition:border-color .15s, background .15s;
+}
+.tier:hover{border-color:var(--ink);}
+.tier .code{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);}
+.tier h4{font-size:16px;margin:0 0 4px;font-family:var(--font-display);font-weight:700;}
+.tier p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+.tier .count{font-family:var(--font-mono);font-size:19px;text-align:right;color:var(--ink);}
+.tier.warm{background:linear-gradient(90deg,var(--gold-tint),var(--surface) 60%);}
+.tier.warm .count{color:var(--gold-deep);}
+.tier.cool .count{color:var(--indigo);}
+.tier[data-w="1"]{width:100%;}
+.tier[data-w="0.82"]{width:82%;margin-left:auto;}
+.tier[data-w="0.6"]{width:60%;margin-left:auto;}
+.tier[data-w="0.4"]{width:40%;margin-left:auto;}
+
+/* ===== QUALITY STEPPER ===== */
+.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+.step{border-top:3px solid var(--line);padding-top:20px;}
+.step.is-active{border-top-color:var(--indigo);}
+.step .num{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+.step h4{font-size:15px;margin:10px 0 6px;font-family:var(--font-display);font-weight:700;}
+.step p{font-size:13px;color:var(--ink-soft);margin:0;}
+
+/* ===== ENGAGEMENT ===== */
+.engage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+.engage-card{border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px;background:var(--surface);display:flex;flex-direction:column;}
+.engage-card.featured{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-8px);box-shadow:0 24px 48px -24px rgba(16,19,28,.35);}
+.engage-card .pill{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-bottom:18px;}
+.engage-card.featured .pill{color:var(--gold);}
+.engage-card h3{font-size:19px;margin-bottom:10px;}
+.engage-card.featured h3{color:#fff;}
+.engage-card .d{font-size:14px;color:var(--ink-soft);margin-bottom:22px;}
+.engage-card.featured .d{color:#C7CAEF;}
+.engage-card ul{list-style:none;margin:0 0 26px;padding:0;display:flex;flex-direction:column;gap:9px;}
+.engage-card li{font-size:13.5px;display:flex;gap:8px;}
+.engage-card li:before{content:"+";color:var(--gold);font-weight:700;}
+.engage-card .d, .engage-card li{color:var(--ink-soft);}
+.engage-card.featured li{color:#D9DBF7;}
+.engage-card .btn{margin-top:auto;align-self:flex-start;}
+
+/* ===== CONTACT ===== */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.contact-wrap h2{margin-bottom:18px;}
+.contact-wrap p{color:var(--ink-soft);font-size:16px;max-width:440px;}
+.contact-links{display:flex;flex-direction:column;gap:14px;margin-top:30px;}
+.contact-links a{font-family:var(--font-mono);font-size:14px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:14px;display:flex;justify-content:space-between;}
+.contact-links a span{color:var(--ink-faint);}
+form.cform{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px;}
+.cform .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.cform input,.cform textarea{
+  width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;
+  font-family:var(--font-body);font-size:14px;background:var(--bg);color:var(--ink);
+}
+.cform input:focus,.cform textarea:focus{outline:2px solid var(--indigo);outline-offset:1px;}
+.cform label{font-size:12.5px;color:var(--ink-soft);display:block;margin-bottom:6px;}
+.cform .field{margin-bottom:14px;}
+.cform button{width:100%;justify-content:center;margin-top:6px;}
+.success-msg{display:none;background:var(--indigo-tint);color:var(--indigo-deep);border-radius:var(--radius-sm);padding:14px 16px;font-size:13.5px;margin-top:14px;}
+.success-msg.show{display:block;}
+
+footer{border-top:1px solid var(--line);padding:48px 0;}
+.foot-row{display:flex;justify-content:space-between;align-items:center;}
+.foot-links{display:flex;gap:28px;font-size:13.5px;color:var(--ink-soft);}
+.foot-meta{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);margin-top:18px;}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;}
+  html{scroll-behavior:auto;}
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:920px){
+  .wrap{padding:0 20px;}
+  .section{padding:64px 0;}
+  .navlinks{display:none;}
+  .menu-btn{display:block;}
+  .hero-grid{grid-template-columns:1fr;}
+  .attune{display:none;}
+  .stat-strip{grid-template-columns:repeat(2,1fr);overflow-x:auto;}
+  .stat-strip .stat{border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .compare{grid-template-columns:1fr;}
+  .cycle{grid-template-columns:1fr;}
+  .cycle-tabs{display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);}
+  .cycle-tab{border-bottom:none;border-right:1px solid var(--line);min-width:200px;}
+  .cycle-panel{padding:28px 24px;}
+  .domain-grid{grid-template-columns:1fr;}
+  .data-grid{grid-template-columns:1fr 1fr;}
+  .tier{grid-template-columns:60px 1fr;row-gap:6px;}
+  .tier .count{grid-column:2;text-align:left;font-size:16px;}
+  .tier[data-w]{width:100%!important;margin-left:0!important;}
+  .stepper{grid-template-columns:1fr 1fr;}
+  .engage-grid{grid-template-columns:1fr;}
+  .engage-card.featured{transform:none;}
+  .contact-wrap{grid-template-columns:1fr;gap:36px;}
+  .cform .row{grid-template-columns:1fr;}
+  .foot-row{flex-direction:column;align-items:flex-start;gap:18px;}
+}
+@media (max-width:560px){
+  .data-grid{grid-template-columns:1fr;}
+  .stat-strip{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="mark"><span class="m1"></span><span class="m2"></span></span>
+      2une.ai
+      <span class="badge">A PhysicsWallah company</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#capabilities" data-nav>Capabilities</a>
+      <a href="#domains" data-nav>Domains</a>
+      <a href="#data" data-nav>Data</a>
+      <a href="#talent" data-nav>Talent</a>
+      <a href="#quality" data-nav>Quality</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Talk to us <span class="btn-arrow">→</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="wrap mobile-panel" id="mobilePanel">
+    <a href="#capabilities">Capabilities</a>
+    <a href="#domains">Domains</a>
+    <a href="#data">Data</a>
+    <a href="#talent">Talent</a>
+    <a href="#quality">Quality</a>
+    <a href="#engagement">Engagement</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span>HUMAN-COMPUTE INFRASTRUCTURE</div>
+          <h1>Frontier AI doesn't run out of compute.<br>It runs out of trustworthy <em>human judgment.</em></h1>
+          <p class="hero-sub">2une gives AI labs and enterprises managed access to India's largest expert talent cloud and a proprietary multimodal data asset — to create, evaluate, and align frontier models with the rigor today's models demand.</p>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn btn-primary">Talk to us <span class="btn-arrow">→</span></a>
+            <a href="#data" class="btn btn-secondary">See the data assets</a>
+          </div>
+        </div>
+        <div class="attune" id="attune">
+          <div class="c1"></div>
+          <div class="c2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap" style="padding:0;">
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="live"><span class="pulse"></span>LIVE</div>
+          <div class="stat-num" data-count="50">0M+</div>
+          <div class="stat-label">Learner & talent network</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="200" style="margin-top:24px;">0K+</div>
+          <div class="stat-label">Curated experts — IIT, MBBS, MBA, PhD</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="10" style="margin-top:24px;">0,000+</div>
+          <div class="stat-label">Active teachers & professors</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="8" style="margin-top:24px;">0M+</div>
+          <div class="stat-label">STEM Q&As, step-by-step</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="4" style="margin-top:24px;">0M+</div>
+          <div class="stat-label">hrs Indic voice corpus</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSITIONING -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>WHY 2UNE</div>
+        <h2>Generic annotation wasn't built for frontier models.</h2>
+        <p>Off-the-shelf labeling treats every task the same. Frontier work — reasoning chains, domain evaluation, alignment — needs calibrated judgment, not just throughput.</p>
+      </div>
+      <div class="compare reveal">
+        <div class="compare-card generic">
+          <h3>Generic annotation</h3>
+          <ul>
+            <li><span class="ico">−</span>Crowd-sourced labelers, no domain depth</li>
+            <li><span class="ico">−</span>Single-pass review</li>
+            <li><span class="ico">−</span>No domain calibration</li>
+            <li><span class="ico">−</span>Black-box quality, little provenance</li>
+            <li><span class="ico">−</span>Priced on volume, not outcomes</li>
+          </ul>
+        </div>
+        <div class="compare-card tune">
+          <h3>2une's human-compute layer</h3>
+          <ul>
+            <li><span class="ico">+</span>Tiered expert reviewers, IIT/PhD/MBBS backgrounds</li>
+            <li><span class="ico">+</span>Multi-pass QA with SME escalation</li>
+            <li><span class="ico">+</span>Domain-calibrated rubrics</li>
+            <li><span class="ico">+</span>Full audit trails and gold standards</li>
+            <li><span class="ico">+</span>Priced on outcomes, SLA-backed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIFECYCLE / CAPABILITIES -->
+  <section class="section" id="capabilities">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>CAPABILITIES</div>
+        <h2>One operating model, across the full model lifecycle.</h2>
+        <p>From cold-start data to deployed alignment — create, evaluate, and align run on the same talent cloud and quality system.</p>
+      </div>
+      <div class="cycle reveal" id="cycle">
+        <div class="cycle-tabs">
+          <div class="cycle-tab active" data-tab="0">
+            <div class="num">01 / LIFECYCLE</div>
+            <div class="ttl">Create</div>
+          </div>
+          <div class="cycle-tab" data-tab="1">
+            <div class="num">02 / LIFECYCLE</div>
+            <div class="ttl">Evaluate</div>
+          </div>
+          <div class="cycle-tab" data-tab="2">
+            <div class="num">03 / LIFECYCLE</div>
+            <div class="ttl">Align</div>
+          </div>
+        </div>
+        <div class="cycle-panel">
+          <div class="cycle-content" data-content="0">
+            <p>Expert-generated datasets, reasoning traces, domain problems, and multimodal tasks — built by people who actually work in the domain, not generic labelers.</p>
+            <div class="tag-row">
+              <span class="tag">Reasoning traces</span><span class="tag">Domain problems</span><span class="tag">Multimodal tasks</span><span class="tag">Synthetic data</span>
+            </div>
+          </div>
+          <div class="cycle-content" data-content="1" style="display:none;">
+            <p>Model evaluation, hallucination checks, factuality review, and benchmark creation — scored against rubrics calibrated by domain experts, not crowd consensus.</p>
+            <div class="tag-row">
+              <span class="tag">Hallucination</span><span class="tag">Factuality</span><span class="tag">Rubric scoring</span><span class="tag">Benchmarks</span>
+            </div>
+          </div>
+          <div class="cycle-content" data-content="2" style="display:none;">
+            <p>RLHF, preference ranking, reward signal data, red teaming, and safety review — the layer where human judgment most directly shapes model behavior.</p>
+            <div class="tag-row">
+              <span class="tag">RLHF</span><span class="tag">Preference data</span><span class="tag">Red team</span><span class="tag">Safety review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMAINS -->
+  <section class="section" id="domains" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>DOMAINS</div>
+        <h2>Five domains where scaled judgment moves the needle.</h2>
+        <p>Capability gains aren't uniform. They concentrate where reasoning, language, regulation, or grounding make off-the-shelf data fail.</p>
+      </div>
+      <div class="domain-grid reveal">
+        <div class="domain-card" data-domain>
+          <div class="tag-sm">CORE</div>
+          <h3>Structured Reasoning</h3>
+          <div class="desc">Step-by-step reasoning and multi-path problem solving across STEM and analytical tasks.</div>
+          <div class="toggle">+ View detail</div>
+          <ul>
+            <li>Large-scale step-by-step reasoning datasets</li>
+            <li>Error detection and correction traces</li>
+            <li>Multi-path problem solving</li>
+          </ul>
+        </div>
+        <div class="domain-card" data-domain>
+          <div class="tag-sm">INDIC-FIRST</div>
+          <h3>Multilingual Intelligence</h3>
+          <div class="desc">Hinglish and code-switched reasoning, aligned across text and voice.</div>
+          <div class="toggle">+ View detail</div>
+          <ul>
+            <li>Hinglish + Indic reasoning datasets</li>
+            <li>Text and voice aligned explanations</li>
+            <li>Code-switching and conversational data</li>
+          </ul>
+        </div>
+        <div class="domain-card" data-domain>
+          <div class="tag-sm">REGULATED</div>
+          <h3>Healthcare Intelligence</h3>
+          <div class="desc">Clinical reasoning and SME-validated decision pipelines for medical AI.</div>
+          <div class="toggle">+ View detail</div>
+          <ul>
+            <li>Clinical reasoning & diagnosis explanation</li>
+            <li>Case-based decision-making traces</li>
+            <li>Expert validation pipelines</li>
+          </ul>
+        </div>
+        <div class="domain-card" data-domain>
+          <div class="tag-sm">HIGH-ACCURACY</div>
+          <h3>Financial & Legal Intelligence</h3>
+          <div class="desc">Risk, fraud, compliance, and legal interpretation pipelines.</div>
+          <div class="toggle">+ View detail</div>
+          <ul>
+            <li>Risk, fraud & compliance reasoning</li>
+            <li>Legal interpretation & document reasoning</li>
+            <li>High-accuracy evaluation pipelines</li>
+          </ul>
+        </div>
+        <div class="domain-card" data-domain>
+          <div class="tag-sm">MULTIMODAL</div>
+          <h3>Physical Intelligence</h3>
+          <div class="desc">Vision + language reasoning grounded in real human demonstrations.</div>
+          <div class="toggle">+ View detail</div>
+          <ul>
+            <li>Multimodal (vision + language) reasoning</li>
+            <li>Human demonstrations & edge cases</li>
+          </ul>
+        </div>
+        <div class="domain-card" style="display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);border-color:var(--ink);">
+          <div>
+            <div class="tag-sm" style="background:rgba(255,255,255,.1);color:#fff;">YOUR DOMAIN</div>
+            <h3 style="color:#fff;">Don't see it here?</h3>
+            <div class="desc" style="color:#C7CAEF;">We stand up new domain pipelines from scratch when frontier labs need them.</div>
+          </div>
+          <a href="#contact" class="btn btn-primary" style="margin-top:18px;background:#fff;color:var(--ink);">Talk to us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA ASSETS -->
+  <section class="section" id="data">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>DATA ASSETS</div>
+        <h2>A proprietary multimodal data moat.</h2>
+        <p>Built on PhysicsWallah's learning ecosystem — assembled over years of real learning activity, not scraped overnight.</p>
+      </div>
+      <div class="data-grid reveal">
+        <div class="data-card">
+          <div class="data-top"><span class="data-format">JSON · STEP</span></div>
+          <div class="data-vol">8M+</div>
+          <div class="data-name">STEM Q&A + Reasoning</div>
+          <div class="data-desc">Step-by-step solved problems with full reasoning chains.</div>
+        </div>
+        <div class="data-card">
+          <div class="data-top"><span class="data-format">MP4 · 1080p</span></div>
+          <div class="data-vol">3M+</div>
+          <div class="data-name">Studio-Grade Video</div>
+          <div class="data-desc">Hours of structured, instructor-led educational video.</div>
+        </div>
+        <div class="data-card">
+          <div class="data-top"><span class="data-format">WAV · 48kHz</span></div>
+          <div class="data-vol">4M+</div>
+          <div class="data-name">Indic Voice Corpus</div>
+          <div class="data-desc">Hindi, Indic-language, and code-mixed speech.</div>
+        </div>
+        <div class="data-card">
+          <div class="data-top"><span class="data-format">TXT · MD</span></div>
+          <div class="data-vol">∞</div>
+          <div class="data-name">Domain Knowledge</div>
+          <div class="data-desc">Continually authored by active subject-matter experts.</div>
+        </div>
+      </div>
+      <p style="margin-top:24px;font-size:13.5px;color:var(--ink-faint);">Available under enterprise license, exclusive carve-outs, or custom curation. <a href="#contact" style="color:var(--indigo);font-weight:600;">Request samples →</a></p>
+    </div>
+  </section>
+
+  <!-- TALENT CLOUD -->
+  <section class="section" id="talent" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>TALENT CLOUD</div>
+        <h2>India's largest talent cloud for AI alignment.</h2>
+        <p>A tiered human network routable by task complexity — from large-scale annotation to reasoning-heavy evaluation and expert adjudication. Cooler tones move raw scale; warmer tones carry judgment.</p>
+      </div>
+      <div class="pyramid reveal">
+        <div class="tier cool" data-w="1">
+          <div class="code">L1</div>
+          <div><h4>Learner & Talent Network</h4><p>Reachable via PhysicsWallah's learner ecosystem</p></div>
+          <div class="count">50M+</div>
+        </div>
+        <div class="tier cool" data-w="0.82">
+          <div class="code">L2</div>
+          <div><h4>High-Cognition Talent Pool</h4><p>Curated — IIT, Master's, PhD, MBBS, MBA backgrounds</p></div>
+          <div class="count">200K+</div>
+        </div>
+        <div class="tier warm" data-w="0.6">
+          <div class="code">L3</div>
+          <div><h4>Domain Experts & SMEs</h4><p>Active teachers, professors, qualified educators</p></div>
+          <div class="count">10,000+</div>
+        </div>
+        <div class="tier warm" data-w="0.4">
+          <div class="code">L4</div>
+          <div><h4>Quality Control Layer</h4><p>Rubric design, calibration, multi-pass QA, escalation</p></div>
+          <div class="count">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALITY -->
+  <section class="section" id="quality">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>QUALITY & TRUST</div>
+        <h2>Built for quality, not just volume.</h2>
+        <p>Every task moves through the same six-stage system before it's delivered.</p>
+      </div>
+      <div class="stepper reveal">
+        <div class="step is-active"><div class="num">01</div><h4>Rubric Design</h4><p>Domain-specific scoring criteria</p></div>
+        <div class="step"><div class="num">02</div><h4>Reviewer Calibration</h4><p>Gold tasks + inter-rater agreement</p></div>
+        <div class="step"><div class="num">03</div><h4>Task Execution</h4><p>Tiered routing, parallel batches</p></div>
+        <div class="step"><div class="num">04</div><h4>Multi-Pass QA</h4><p>Independent re-review + diff</p></div>
+        <div class="step"><div class="num">05</div><h4>Expert Escalation</h4><p>SME adjudication on disagreements</p></div>
+        <div class="step"><div class="num">06</div><h4>Structured Delivery</h4><p>JSON, provenance, audit trail</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGAGEMENT -->
+  <section class="section" id="engagement" style="background:var(--surface);border-top:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>ENGAGEMENT</div>
+        <h2>Three ways to work with us.</h2>
+      </div>
+      <div class="engage-grid reveal">
+        <div class="engage-card">
+          <div class="pill">ENGAGEMENT 01</div>
+          <h3>Core IP Licensing</h3>
+          <div class="d">License existing multimodal datasets across reasoning, video, voice, and language.</div>
+          <ul><li>Pre-curated datasets</li><li>Enterprise terms</li><li>Optional exclusivity</li></ul>
+          <a href="#contact" class="btn btn-secondary">Talk to us →</a>
+        </div>
+        <div class="engage-card featured">
+          <div class="pill">★ MOST ENGAGEMENTS</div>
+          <h3>Managed Human-Compute</h3>
+          <div class="d">Run custom annotation, evaluation, RLHF, red teaming, or validation workflows end to end.</div>
+          <ul><li>Tiered talent routing</li><li>End-to-end QA</li><li>SLA-backed delivery</li></ul>
+          <a href="#contact" class="btn btn-primary" style="background:#fff;color:var(--ink);">Talk to us →</a>
+        </div>
+        <div class="engage-card">
+          <div class="pill">ENGAGEMENT 03</div>
+          <h3>Strategic AI Partnership</h3>
+          <div class="d">Build localized benchmarks and domain-specific data engines, co-designed with our SMEs.</div>
+          <ul><li>Co-designed pipelines</li><li>Dedicated SME pods</li><li>Quarterly roadmap</li></ul>
+          <a href="#contact" class="btn btn-secondary">Talk to us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact-wrap reveal">
+        <div>
+          <div class="eyebrow"><span class="dot"></span>GET IN TOUCH</div>
+          <h2>Build frontier AI on trustworthy human judgment.</h2>
+          <p>Tell us what you're building and where the data or evaluation gap is — we'll come back with a scoped pilot, not a generic pitch.</p>
+          <div class="contact-links">
+            <a href="mailto:sandeep.varma@pw.live?subject=Talk%20to%202une.ai">Email the team <span>sandeep.varma@pw.live →</span></a>
+            <a href="mailto:sandeep.varma@pw.live?subject=Request%20data%20samples%20from%202une.ai">Request data samples <span>→</span></a>
+          </div>
+        </div>
+        <form class="cform" id="cform">
+          <div class="row">
+            <div class="field"><label for="fname">Name</label><input id="fname" type="text" required></div>
+            <div class="field"><label for="fcompany">Company</label><input id="fcompany" type="text" required></div>
+          </div>
+          <div class="field"><label for="femail">Work email</label><input id="femail" type="email" required></div>
+          <div class="field"><label for="fmsg">What are you building?</label><textarea id="fmsg" rows="3" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send to 2une <span class="btn-arrow">→</span></button>
+          <div class="success-msg" id="successMsg">Thanks — your mail client should now be open with this pre-filled. We typically reply within one business day.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <a href="#top" class="brand">
+        <span class="mark"><span class="m1"></span><span class="m2"></span></span>
+        2une.ai
+      </a>
+      <div class="foot-links">
+        <a href="#capabilities">Capabilities</a>
+        <a href="#domains">Domains</a>
+        <a href="#talent">Talent</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-meta">© 2026 2une.ai · A PhysicsWallah company · BLR · DEL</div>
+  </div>
+</footer>
+
+<script>
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn');
+const mobilePanel = document.getElementById('mobilePanel');
+menuBtn.addEventListener('click', () => mobilePanel.classList.toggle('open'));
+mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobilePanel.classList.remove('open')));
+
+// Active nav link on scroll
+const navLinks = document.querySelectorAll('[data-nav]');
+const sections = Array.from(navLinks).map(l => document.querySelector(l.getAttribute('href')));
+function setActiveNav(){
+  let current = sections[0];
+  sections.forEach(s => { if(s && window.scrollY >= s.offsetTop - 120) current = s; });
+  navLinks.forEach(l => l.classList.toggle('active', document.querySelector(l.getAttribute('href')) === current));
+}
+window.addEventListener('scroll', setActiveNav);
+setActiveNav();
+
+// Attunement animation
+const attune = document.getElementById('attune');
+setTimeout(() => attune && attune.classList.add('tuned'), 500);
+
+// Lifecycle tabs
+document.querySelectorAll('.cycle-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.cycle-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.cycle-content').forEach(c => c.style.display = 'none');
+    tab.classList.add('active');
+    document.querySelector(`.cycle-content[data-content="${tab.dataset.tab}"]`).style.display = 'block';
+  });
+});
+
+// Domain cards toggle
+document.querySelectorAll('[data-domain]').forEach(card => {
+  card.addEventListener('click', () => {
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open');
+    const t = card.querySelector('.toggle');
+    if(t) t.textContent = wasOpen ? '+ View detail' : '− Hide detail';
+  });
+});
+
+// Stat count-up
+const counted = new Set();
+function animateCount(el){
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.textContent.replace(/^0/,'');
+  let cur = 0;
+  const step = Math.max(target/30,0.3);
+  const tick = () => {
+    cur += step;
+    if(cur >= target){ el.textContent = target + suffix; return; }
+    el.textContent = Math.floor(cur) + suffix;
+    requestAnimationFrame(tick);
+  };
+  tick();
+}
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !counted.has(e.target)){
+      counted.add(e.target);
+      animateCount(e.target);
+    }
+  });
+},{threshold:.4});
+document.querySelectorAll('[data-count]').forEach(el => statObserver.observe(el));
+
+// Scroll reveal
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Quality stepper active highlight
+const steps = document.querySelectorAll('.step');
+const stepObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ steps.forEach(s=>s.classList.remove('is-active')); e.target.classList.add('is-active'); } });
+},{threshold:.6});
+steps.forEach(s => stepObserver.observe(s));
+
+// Contact form -> mailto
+const cform = document.getElementById('cform');
+cform.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('fname').value;
+  const company = document.getElementById('fcompany').value;
+  const email = document.getElementById('femail').value;
+  const msg = document.getElementById('fmsg').value;
+  const body = encodeURIComponent(`Name: ${name}\nCompany: ${company}\nEmail: ${email}\n\n${msg}`);
+  window.location.href = `mailto:sandeep.varma@pw.live?subject=Talk%20to%202une.ai%20-%20${encodeURIComponent(company)}&body=${body}`;
+  document.getElementById('successMsg').classList.add('show');
+});
+</script>
+
+</body>
+</html>
